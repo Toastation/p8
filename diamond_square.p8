@@ -18,8 +18,9 @@ function set_sample(x,y,v)
 end
 
 function get_color(v,ma,mi)
-	i=1+((v-mi)*6)/(ma-mi)
-	return colors[flr(i)]
+	d=(ma-mi)/scolors
+	i=1+flr((v-mi)/d)
+	return colors[i]
 end
 
 function diamond(x,y,s,v)
@@ -55,40 +56,47 @@ function diamond_square(s,sc)
 	end
 end
 
--- init
-for x=0,width-1 do	
-	for y=0,width-1 do
-		if x%fs==0 and y%fs==0 then
-			set_sample(x,y,rnd(2)-1)
-		else
-			set_sample(x,y,0)
-		end
-	end
+function init_screen()
+ for x=0,width-1 do	
+ 	for y=0,width-1 do
+ 		if x%fs==0 and y%fs==0 then
+ 			set_sample(x,y,rnd(2)-1)
+ 		else
+ 			set_sample(x,y,0)
+ 		end
+ 	end
+ end
 end
 
--- udpdate
-s=fs
-sc=1.0
-while s>1 do
-	diamond_square(s,sc)
-	s=s/2
-	sc=sc/2
+function run_ds()
+ s=fs
+ sc=1.0
+ while s>1 do
+ 	diamond_square(s,sc)
+ 	s=s/2
+ 	sc=sc/2
+ end
+ -- update min/max of the array
+ for i in all(screen) do
+ 	ma=max(ma,i)
+ 	mi=min(mi,i)
+ end
 end
 
-for i in all(screen) do
-	ma=max(ma,i)
-	mi=min(mi,i)
+function _init()
+	init_screen()
+ run_ds()
 end
 
--- rendering
-cls()
-for x=0,width-1 do
-	for y=0,width-1 do
-		c=get_color(sample(x,y),ma,mi)
-		pset(x,y,c)
-	end
+function _draw()
+ cls()
+ for x=0,width-1 do
+ 	for y=0,width-1 do
+ 		c=get_color(sample(x,y),ma,mi)
+ 		pset(x,y,c)
+ 	end
+ end
 end
-flip()
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
