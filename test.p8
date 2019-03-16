@@ -1,22 +1,29 @@
 pico-8 cartridge // http://www.pico-8.com
 version 14
 __lua__
-::_::
-cls(1)
-srand(34)
-for y=0,141,15 do
- x=rnd(144)-8
- h=14+rnd(24)
- for i=0,h do
-  circfill(x-i*2,y+2,(h-i)/6,0)
- end
- line(x,y,x,y+2,5)
- --for i=-15,15 do
- -- line(x+i*h/80,y-abs(i)/6,x+sin(t()/5+x/150+y/200)/5*h,y-h,i>0 and 3 or 0)
- --end
+
+-- constants
+bsize=5
+width=10
+height=20
+border2={117,117};
+border1={117-bsize*width,117-bsize*height};
+
+board={}
+
+function _update()
+
 end
-flip()
-goto _
+
+function _draw() 
+    cls();
+    rect(0,0,127,127,7);
+    rect(border1[1],border1[2],border2[1],border2[2],7);
+    fillp(0b1111010111110101);
+    
+    fillp(0b0000000000000000);
+end
+
 __gfx__
 00000000008888000777777777777770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000088888807777777777777776000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
