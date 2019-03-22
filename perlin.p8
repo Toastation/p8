@@ -19,11 +19,13 @@ p={}
 fade={}
 pa={7,8,9,10}
 
-for i=0,255 do
-	local t=shr(i,8) --0...1
-	fade[t]=t*t*t*(t*(t*6-15)+10)
-	p[i]=permutation[i+1]
-	p[256+i]=permutation[i+1]
+function init()
+ for i=0,255 do
+ 	local t=shr(i,8) --0...1
+ 	fade[t]=t*t*t*(t*(t*6-15)+10)
+ 	p[i]=permutation[i+1]
+ 	p[256+i]=permutation[i+1]
+ end
 end
 
 function lerp(t,a,b)
@@ -38,7 +40,7 @@ function grad(hash,x,y,z)
 	if band(h,1)==0 then d=u else d=-u end
 	if band(h,2)==0 then d=d+v else d=d-v end
 	return d
- end
+end
 
 function perlin(x,y,z)
 	local xi=band(x,255)
@@ -67,17 +69,14 @@ function perlin(x,y,z)
 end
 
 function _init()
-	t=0
+	init()
 	cls()
 end
 
-function _update()
-	t=t+0.05
-end
-
 function _draw()
-	local x,y,n,c,s
-	for i=1,500 do
+	local x,y,n,c,s,t
+	t=time()
+	for i=1,256 do
 		x=rnd(128)
 		y=rnd(128)
 		n=perlin(x/20+t,y/20+t,t)
