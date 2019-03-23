@@ -21,6 +21,9 @@ pa1={2,8,14,15,7}
 pa2={7,8,9,10,}
 pa3={0,1,13,6,7}
 pa4={0,1,2,4,9}
+pa={pa1,pa2,pa3,pa4}
+count=0
+countt=0
 
 function init()
  for i=0,255 do
@@ -76,16 +79,24 @@ function _init()
 	cls()
 end
 
+function _update()
+	countt+=0.05
+	if countt>8 then countt=0 count+=1 end
+end
+
 function _draw()
-	local x,y,n,c,s,t
+	local x,y,n,c,s,t,pi
 	t=time()
+	pi=flr(count%(#pa)+1)
 	for i=1,256 do
 		x=rnd(128)
 		y=rnd(128)
 		n=perlin(x/20+t,y/20+t,t)
 		n=(n+1)/2
-		print("▒",x,y,pa4[flr(lerp(n,1,#pa4+1))])
+		c=pa[pi][flr(lerp(n,1,#(pa[pi])+1))]
+		print("▒",x,y,c)
 	end
+
 end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
