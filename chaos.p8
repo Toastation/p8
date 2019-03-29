@@ -8,41 +8,37 @@ sin1 = sin function sin(angle) return sin1(-angle/(pi2)) end
 cx=64
 cy=64
 r=60
-n=3
-prev={-1,-1}
+n=4
+icur=-1
 next={-1,-1}
-pa={8,9,10}
+pa={8,9,10,11}
 
 function lerp(t,a,b)
 	return a+t*(b-a)
 end
 
 function initpoints()
-	local i,a
-	for i=0,n-1 do 
-		a=i*pi2/n
-		points[i] = {cx+cos(a)*r,cy+sin(a)*r}
-	end
+	points[0]={0,0}
+	points[1]={127,0}
+	points[2]={128,128}
+	points[3]={0,127}
 end
 
 function _init()
 	cls()
 	initpoints()
-	cur={rnd(128),rnd(128)}
+	icur=flr(rnd(n))
+	cur={points[icur][1],points[icur][2]}
 end
 
 function _draw()
-	if time()%2==0 then
-		if n==6 then n=3 initpoints() cls() 
-		else n+=1 initpoints() end
-	end
 	for i=0,5000 do
-		next=points[flr(rnd(n))]
-		if next[1]!=prev[1] or next[2]!=prev[2] then
-			cur[1]=lerp(0.5,cur[1],next[1])
-			cur[2]=lerp(0.5,cur[2],next[2])
-			pset(cur[1],cur[2],pa[1+flr(rnd(3))])
-		end
-		prev=next
+		icur+=flr(rnd(3))-1
+		if icur<0 then icur=n-1
+		elseif icur>=n then icur=0 end
+		next=points[icur]
+		cur[1]=lerp(0.5,cur[1],next[1])
+		cur[2]=lerp(0.5,cur[2],next[2])
+		pset(cur[1],cur[2],pa[icur+1])
 	end
 end
