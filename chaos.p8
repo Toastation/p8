@@ -19,9 +19,9 @@ end
 
 function initpoints()
 	points[0]={0,0}
-	points[1]={127,0}
+	points[1]={128,0}
 	points[2]={128,128}
-	points[3]={0,127}
+	points[3]={0,128}
 end
 
 function _init()
