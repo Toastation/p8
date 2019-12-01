@@ -83,14 +83,26 @@ function run_ds()
  end
 end
 
-init_screen()
-run_ds()
+function render_screen()
+ init_screen()
+ run_ds()
+ 
+ --draw
+ cls()
+ for x=0,width-1 do
+ 	for y=0,width-1 do
+ 		c=get_color(sample(x,y),ma,mi)
+ 		pset(x,y,c)
+ 	end
+ end
+end
 
---draw
-cls()
-for x=0,width-1 do
-	for y=0,width-1 do
-		c=get_color(sample(x,y),ma,mi)
-		pset(x,y,c)
+function _init()
+	render_screen()
+end
+
+function _update()
+	if btnp(4) then 
+		render_screen()
 	end
 end
