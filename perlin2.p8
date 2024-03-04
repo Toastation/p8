@@ -1,5 +1,5 @@
 pico-8 cartridge // http://www.pico-8.com
-version 16
+version 38
 __lua__
 permutation={151,160,137,91,90,15,         
     131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,    
@@ -17,12 +17,19 @@ permutation={151,160,137,91,90,15,
 }
 p={}
 fade={}
+pa1={12,7}
+pa2={7,8,9,10,}
+pa3={0,1,13,6,7}
+pa4={0,1,2,4,9}
+pa={pa1}
 pi=3.141592
 pi2=2*pi
 cx=64
 cy=64
 phase=0
 zo=0
+count=0
+countt=0
 
 function init()
  for i=0,255 do
@@ -82,17 +89,47 @@ function _init()
 
 end
 
+function _update()
+  	countt+=0.05
+	if countt>8 then countt=0 count+=1 end
+end
+
 function _draw() 
-	cls()
-	local x,y,r,xo,yo
-	for i=0,pi2,0.015 do
-		xo=maprange(cos(i+phase),-1,1,0,5)
-  yo=maprange(sin(i+phase),-1,1,0,5)
-		r=maprange(perlin(xo,yo,zo),-1,1,25,35)
-		x=cx+r*cos(i)
-		y=cy+r*sin(i)
-		circfill(x,y,2,8)
+	--cls()
+	-- water
+	local x,y,n,c,s,t,pi,char
+	t=time()
+	pi=flr(count%(#pa)+1)
+	for i=1,256 do
+		x=rnd(128)
+		y=rnd(128)
+		n=perlin(x/60+t/60,y/50+t/60,t/4)
+		n=(n+1)/2
+		if n>0.75 then 
+			c=7
+			char="█"
+		elseif n>0.7 then
+			c=7
+			char="ˇ"
+		else
+			c=12
+			char="█" 
+		end
+		print(char,x,y,c)
 	end
-	--phase+=0.003
+	
+	-- rubber band
+	local r,xo,yo,offx,offy
+	offx=sin(t/5)
+	offy=sin(t/3+0.2)
+	--for i=0,pi2,0.015 do
+		--xo=maprange(cos(i+phase),-1,1,0,5)
+  --yo=maprange(sin(i+phase),-1,1,0,5)
+		--r=maprange(perlin(xo,yo,zo),-1,1,25,35)
+		--x=cx+r*cos(i)+offx
+		--y=cy+r*sin(i)+offy
+		--circfill(x,y,2,8)
+	--end
+	phase+=0.003
 	zo+=0.08
 end
